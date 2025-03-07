@@ -274,65 +274,7 @@ if __name__ == "__main__":
     try:
         bot.infinity_polling()
     except Exception as e:
-        logging.error(f"Bot polling error: {e}")import os
-
-            if len(cmd_words) < 3:
-                bot.reply_to(message, "<b>⚠️</b> Use: <i>/approve &lt;user_id&gt; &lt;days&gt;</i>")
-                return
-            try:
-                target_id = int(cmd_words[1])
-                days = int(cmd_words[2])
-            except ValueError:
-                bot.reply_to(message, "<b>⚠️</b> Please provide valid numerical values for user_id and days.")
-                return
-
-            valid_until = datetime.now() + timedelta(days=days)
-            users_collection.update_one(
-                {"user_id": target_id},
-                {"$set": {
-                    "valid_until": valid_until,
-                    "approved": True
-                }},
-                upsert=True
-            )
-            bot.reply_to(message, f"<b>✅</b> Approved user <code>{target_id}</code> for <b>{days}</b> days")
-            
-        elif command == '/disapprove':
-            if len(cmd_words) < 2:
-                bot.reply_to(message, "<b>⚠️</b> Use: <i>/disapprove &lt;user_id&gt;</i>")
-                return
-            try:
-                target_id = int(cmd_words[1])
-            except ValueError:
-                bot.reply_to(message, "<b>⚠️</b> Please provide a valid numerical user_id.")
-                return
-
-            users_collection.update_one(
-                {"user_id": target_id},
-                {"$set": {
-                    "approved": False
-                }},
-                upsert=True
-            )
-            bot.reply_to(message, f"<b>✅</b> Disapproved user <code>{target_id}</code>")
-    except Exception as e:
-        logging.error(f"Approval command error: {e}")
-        bot.reply_to(message, "<b>❌</b> Error processing command")
-
-@bot.message_handler(commands=['attack'])
-def handle_attack(message):
-    chat_id = message.chat.id
-    with attack_lock:
-        if ongoing_attacks.get(chat_id, False):
-            bot.reply_to(message, "<b>⚠️</b> An attack is already ongoing in this chat. Please wait and try again later.")
-            return
-        # Set the attack status for the chat as active.
-        ongoing_attacks[chat_id] = True
-
-    try:
-        user_id = message.from_user.id
-        user_data = users_collection.find_one({"user_id": user_id})
-        
+        logging.error(f"Bot polling error: {e}")        
         if not user_data or not user_data.get('approved'):
             bot.reply_to(message, "<b>🚫</b> Contact <a href='tg://user?id=6552242136'>Owner</a> for access.")
             with attack_lock:
