@@ -1,0 +1,21 @@
+FROM ubuntu:20.04
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    gcc \
+    make \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /workspace
+
+# Copy requirements.txt and install Python dependencies
+COPY requirements.txt /workspace/
+RUN pip3 install -r requirements.txt
+
+# Copy the compiled C program and make it executable
+COPY your_compiled_c_program /workspace/
+RUN chmod +x /workspace/your_compiled_c_program
