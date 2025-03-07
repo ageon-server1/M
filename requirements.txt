@@ -1,0 +1,5 @@
+telebot
+pymongo
+certifi
+requests
+aiohttp
