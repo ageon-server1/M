@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: my-bot            # अपनी सेवा का नाम बदलें
+    env: python             # Python environment का उपयोग
+    plan: free              # प्लान (उदाहरण के लिए free) 
+    buildCommand: |
+      chmod +x bgmi        # bgmi फ़ाइल को executable बनाएं
+      pip install -r requirements.txt  # Dependencies इंस्टॉल करें
+    startCommand: python bot.py         # बोट स्टार्ट करने का कमांड
